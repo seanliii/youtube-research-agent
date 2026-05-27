@@ -33,10 +33,7 @@
   .header::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: -50%; left: -50%; width: 200%; height: 200%;
     background: radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
@@ -59,7 +56,7 @@
     font-size: 0.75rem;
     margin-top: 8px;
   }
-  .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
   .search-box {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -67,11 +64,7 @@
     padding: 24px;
     margin-bottom: 28px;
   }
-  .search-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
+  .search-row { display: flex; gap: 12px; margin-bottom: 16px; }
   .search-input {
     flex: 1;
     background: var(--bg);
@@ -87,61 +80,41 @@
   .search-input::placeholder { color: var(--muted); }
   .btn {
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    color: white; border: none;
+    padding: 12px 24px; border-radius: 10px;
+    font-size: 0.95rem; font-weight: 600;
     cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
     white-space: nowrap;
   }
   .btn:hover { opacity: 0.9; transform: translateY(-1px); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .topics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .topics { display: flex; flex-wrap: wrap; gap: 8px; }
   .topic-btn {
     background: rgba(124,58,237,0.1);
     border: 1px solid rgba(124,58,237,0.25);
     color: #a78bfa;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    cursor: pointer;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 0.8rem; cursor: pointer;
     transition: all 0.2s;
   }
-  .topic-btn:hover {
-    background: rgba(124,58,237,0.25);
-    border-color: rgba(124,58,237,0.5);
-  }
+  .topic-btn:hover { background: rgba(124,58,237,0.25); border-color: rgba(124,58,237,0.5); }
+
   .results-section { display: none; }
   .results-section.active { display: block; }
+
   .section-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
   }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
   .videos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
+    gap: 16px; margin-bottom: 28px;
   }
   .video-card {
     background: var(--surface);
@@ -150,114 +123,73 @@
     overflow: hidden;
     transition: border-color 0.2s, transform 0.2s;
     cursor: pointer;
-    text-decoration: none;
-    color: var(--text);
-    display: block;
+    text-decoration: none; color: var(--text); display: block;
   }
-  .video-card:hover {
-    border-color: var(--accent2);
-    transform: translateY(-3px);
-  }
+  .video-card:hover { border-color: var(--accent2); transform: translateY(-3px); }
   .video-thumb {
-    width: 100%;
-    aspect-ratio: 16/9;
+    width: 100%; aspect-ratio: 16/9;
     background: var(--border);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
-  .video-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .play-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
+    width: 44px; height: 44px;
     background: rgba(255,0,64,0.85);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    opacity: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; opacity: 0;
     transition: opacity 0.2s;
   }
   .video-card:hover .play-icon { opacity: 1; }
   .duration-badge {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
+    position: absolute; bottom: 6px; right: 6px;
+    background: rgba(0,0,0,0.8); color: white;
+    font-size: 0.7rem; padding: 2px 6px; border-radius: 4px;
   }
   .video-info { padding: 12px; }
   .video-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.4;
+    font-size: 0.875rem; font-weight: 600; line-height: 1.4;
     margin-bottom: 6px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
   }
   .video-meta {
-    color: var(--muted);
-    font-size: 0.75rem;
-    display: flex;
-    justify-content: space-between;
+    color: var(--muted); font-size: 0.75rem;
+    display: flex; justify-content: space-between;
   }
+  .video-desc {
+    color: var(--muted); font-size: 0.78rem;
+    margin-top: 6px; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+
   .summary-box {
     background: var(--surface);
     border: 1px solid rgba(124,58,237,0.3);
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 20px; margin-bottom: 20px;
   }
   .summary-box h3 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #a78bfa;
+    font-size: 0.875rem; font-weight: 600; color: #a78bfa;
     margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    display: flex; align-items: center; gap: 6px;
   }
-  .summary-content {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--text);
-  }
-  .key-points {
-    margin-top: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+  .summary-content { font-size: 0.9rem; line-height: 1.7; color: var(--text); }
+  .key-points { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
   .key-point {
     background: rgba(16,185,129,0.1);
     border: 1px solid rgba(16,185,129,0.2);
     color: var(--green);
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 0.78rem;
+    padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
   }
-  .loading {
-    text-align: center;
-    padding: 60px 20px;
-    display: none;
-  }
+
+  .loading { text-align: center; padding: 60px 20px; display: none; }
   .loading.active { display: block; }
   .spinner {
-    width: 48px;
-    height: 48px;
+    width: 48px; height: 48px;
     border: 3px solid var(--border);
     border-top-color: var(--accent2);
     border-radius: 50%;
@@ -266,50 +198,78 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading p { color: var(--muted); }
+
   .error-box {
     background: rgba(255,0,64,0.08);
     border: 1px solid rgba(255,0,64,0.25);
-    border-radius: 10px;
-    padding: 16px;
-    color: #ff6b8a;
-    font-size: 0.875rem;
-    display: none;
-    margin-bottom: 20px;
+    border-radius: 10px; padding: 16px;
+    color: #ff6b8a; font-size: 0.875rem;
+    display: none; margin-bottom: 20px;
   }
   .error-box.active { display: block; }
+
   .powered {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.75rem;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    text-align: center; color: var(--muted); font-size: 0.75rem;
+    margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);
   }
-  .stats-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
+  .stats-row { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
   .stat-chip {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 8px 14px; border-radius: 8px;
+    font-size: 0.8rem; color: var(--muted);
   }
   .stat-chip strong { color: var(--text); }
+
+  .api-key-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .api-key-section summary {
+    cursor: pointer; color: var(--muted); font-size: 0.8rem;
+  }
+  .api-key-section .inner { margin-top: 12px; }
+  .api-key-section label { color: var(--muted); font-size: 0.78rem; display: block; margin-bottom: 4px; }
+  .api-key-input {
+    width: 100%;
+    background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 12px;
+    border-radius: 8px; font-size: 0.85rem;
+    margin-bottom: 8px; outline: none;
+  }
+  .api-key-input:focus { border-color: var(--accent2); }
+  .save-btn {
+    background: var(--green); color: white; border: none;
+    padding: 6px 14px; border-radius: 6px;
+    font-size: 0.78rem; cursor: pointer;
+  }
+  .save-btn:hover { opacity: 0.9; }
+  .key-status { font-size: 0.75rem; margin-left: 8px; }
+  .key-ok { color: var(--green); }
+  .key-none { color: var(--muted); }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>🎬 YouTube Research Agent</h1>
-  <p>输入话题，AI自动搜索YouTube视频并生成研究摘要</p>
+  <p>输入话题，AI搜索YouTube视频并生成研究摘要</p>
   <span class="badge">由小蓝虾复刻 · 2026-05-27</span>
 </div>
 
 <div class="container">
+  <!-- API Key Config (collapsed) -->
+  <details class="api-key-section" id="apiSection">
+    <summary>⚙️ API 设置 <span class="key-status" id="keyStatus"></span></summary>
+    <div class="inner">
+      <label>YouTube Data API v3 Key（<a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#a78bfa">免费获取</a>，每天10000次配额）</label>
+      <input type="password" class="api-key-input" id="ytKeyInput" placeholder="AIza..." />
+      <button class="save-btn" onclick="saveKey()">💾 保存到浏览器</button>
+      <p style="margin-top:8px;font-size:0.72rem;color:var(--muted)">Key 仅存储在你的浏览器 localStorage，不会发送到任何第三方服务器。无 Key 时使用 Invidious 公共实例（速度较慢）。</p>
+    </div>
+  </details>
+
   <div class="search-box">
     <div class="search-row">
       <input type="text" class="search-input" id="queryInput" placeholder="输入研究话题，例如：AI agent tools 2026..." />
@@ -334,45 +294,64 @@
 
   <div class="results-section" id="resultsSection">
     <div class="stats-row" id="statsRow"></div>
-
     <div class="section-title">🎯 AI研究摘要</div>
     <div class="summary-box" id="summaryBox">
       <h3>🤖 智能摘要</h3>
       <div class="summary-content" id="summaryContent"></div>
       <div class="key-points" id="keyPoints"></div>
     </div>
-
     <div class="section-title">📺 相关视频</div>
     <div class="videos-grid" id="videosGrid"></div>
   </div>
 
   <div class="powered">
-    🦐 小蓝虾 × YouTube Research Agent · 数据来自 YouTube + DuckDuckGo
+    🦐 小蓝虾 × YouTube Research Agent · 数据来自 YouTube Data API / Invidious
   </div>
 </div>
 
 <script>
-const CORS_PROXIES = [
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.io/?',
+// ===== Config =====
+const INVIDIOUS_INSTANCES = [
+  'https://inv.nadeko.net',
+  'https://invidious.nerdvpn.de',
+  'https://invidious.privacyredirect.com',
+  'https://yewtu.be',
+  'https://vid.puffyan.us',
 ];
 
+const YT_API_BASE = 'https://www.googleapis.com/youtube/v3';
+
+// ===== Key Management =====
+function getKey() { return localStorage.getItem('yt_api_key') || ''; }
+function saveKey() {
+  const key = document.getElementById('ytKeyInput').value.trim();
+  if (key) {
+    localStorage.setItem('yt_api_key', key);
+    updateKeyStatus();
+    alert('✅ 已保存！');
+  }
+}
+function updateKeyStatus() {
+  const el = document.getElementById('keyStatus');
+  if (getKey()) {
+    el.innerHTML = '<span class="key-ok">✅ YouTube API 已配置</span>';
+  } else {
+    el.innerHTML = '<span class="key-none">（未配置，使用 Invidious 备用源）</span>';
+  }
+}
+
+// ===== Search Logic =====
 function setQuery(q) {
   document.getElementById('queryInput').value = q;
   document.getElementById('queryInput').focus();
 }
-
 function showLoading(text) {
   document.getElementById('loadingBox').classList.add('active');
   document.getElementById('loadingText').textContent = text || '正在搜索...';
   document.getElementById('resultsSection').classList.remove('active');
   document.getElementById('errorBox').classList.remove('active');
 }
-
-function hideLoading() {
-  document.getElementById('loadingBox').classList.remove('active');
-}
-
+function hideLoading() { document.getElementById('loadingBox').classList.remove('active'); }
 function showError(msg) {
   hideLoading();
   const box = document.getElementById('errorBox');
@@ -380,174 +359,190 @@ function showError(msg) {
   box.classList.add('active');
 }
 
-async function fetchWithProxy(url) {
-  for (const proxy of CORS_PROXIES) {
+// --- YouTube Data API v3 (user's own key, no CORS issue) ---
+async function searchYouTubeAPI(query, key) {
+  const url = `${YT_API_BASE}/search?part=snippet&type=video&maxResults=9&q=${encodeURIComponent(query)}&key=${key}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `YouTube API ${res.status}`);
+  }
+  const data = await res.json();
+  return (data.items || []).map(item => ({
+    videoId: item.id.videoId,
+    title: item.snippet.title,
+    channel: item.snippet.channelTitle,
+    description: item.snippet.description,
+    published: item.snippet.publishedAt ? new Date(item.snippet.publishedAt).toLocaleDateString('zh-CN') : '',
+    thumb: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${item.id.videoId}/hqdefault.jpg`,
+  }));
+}
+
+// --- Invidious fallback (public instances, no key needed, no CORS) ---
+async function searchInvidious(query) {
+  const errors = [];
+  for (const instance of INVIDIOUS_INSTANCES) {
     try {
-      const res = await fetch(proxy + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
-      if (res.ok) return await res.text();
-    } catch(e) { continue; }
-  }
-  throw new Error('所有代理均失败');
-}
-
-async function searchYouTube(query) {
-  // Use YouTube's web search to find videos
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-  const html = await fetchWithProxy(searchUrl);
-  
-  // Extract video data from YouTube's initial data
-  const match = html.match(/var ytInitialData = ({.+?});<\/script>/);
-  if (!match) throw new Error('无法解析YouTube数据');
-  
-  const data = JSON.parse(match[1]);
-  const contents = data?.contents?.twoColumnSearchResultsRenderer?.primaryContents
-    ?.sectionListRenderer?.contents?.[0]?.itemSectionRenderer?.contents || [];
-  
-  const videos = [];
-  for (const item of contents) {
-    const v = item.videoRenderer;
-    if (!v) continue;
-    const videoId = v.videoId;
-    const title = v.title?.runs?.[0]?.text || '';
-    const channel = v.ownerText?.runs?.[0]?.text || v.longBylineText?.runs?.[0]?.text || '';
-    const views = v.viewCountText?.simpleText || v.viewCountText?.runs?.map(r=>r.text).join('') || '';
-    const duration = v.lengthText?.simpleText || '';
-    const published = v.publishedTimeText?.simpleText || '';
-    const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-    if (videoId && title) {
-      videos.push({ videoId, title, channel, views, duration, published, thumb });
+      const url = `${instance}/api/v1/search?q=${encodeURIComponent(query)}&type=video&sort_by=relevance`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (!Array.isArray(data) || data.length === 0) continue;
+      return data.slice(0, 9).map(v => ({
+        videoId: v.videoId,
+        title: v.title,
+        channel: v.author || '',
+        description: v.description || '',
+        views: v.viewCount ? formatViews(v.viewCount) : '',
+        duration: v.lengthSeconds ? formatDuration(v.lengthSeconds) : '',
+        published: v.publishedText || '',
+        thumb: v.videoThumbnails?.[0]?.url || `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`,
+      }));
+    } catch(e) {
+      errors.push(`${instance}: ${e.message}`);
+      continue;
     }
-    if (videos.length >= 6) break;
   }
-  return videos;
+  throw new Error('所有 Invidious 实例不可用。建议配置 YouTube API Key（点上方⚙️设置）。\n' + errors.join('\n'));
 }
 
-function generateSummary(query, videos) {
-  if (videos.length === 0) return null;
-  
-  const channels = [...new Set(videos.map(v => v.channel).filter(Boolean))].slice(0, 4);
-  const totalVideos = videos.length;
-  
-  // Extract key themes from titles
-  const allWords = videos.flatMap(v => v.title.toLowerCase().split(/\s+/))
-    .filter(w => w.length > 3 && !['with','from','that','this','have','will','what','your','their','more','about','than','some','also','been','just','like','when','then','into','them','they','were','been','would','which','could','there','other'].includes(w));
-  const wordCount = {};
-  allWords.forEach(w => wordCount[w] = (wordCount[w]||0)+1);
-  const topWords = Object.entries(wordCount)
-    .sort((a,b) => b[1]-a[1])
-    .slice(0, 8)
-    .map(([w]) => w);
-  
-  return {
-    summary: `关于「${query}」，YouTube上共有 ${totalVideos} 个相关视频。主要内容创作者包括 ${channels.join('、')} 等。视频内容涵盖了实践教程、分析解读和案例分享等多种形式，帮助你快速掌握这一领域的核心知识。`,
-    keyPoints: topWords
-  };
+function formatViews(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M views';
+  if (n >= 1e3) return (n/1e3).toFixed(0) + 'K views';
+  return n + ' views';
+}
+function formatDuration(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (m >= 60) {
+    const h = Math.floor(m / 60);
+    return `${h}:${String(m%60).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  return `${m}:${String(s).padStart(2,'0')}`;
 }
 
+// --- Main Search ---
 async function doSearch() {
   const query = document.getElementById('queryInput').value.trim();
   if (!query) return;
-  
   const btn = document.getElementById('searchBtn');
   btn.disabled = true;
-  
-  showLoading('🔍 正在搜索YouTube...');
-  
+
+  const key = getKey();
+  let videos = [];
+  let source = '';
+
   try {
-    let videos = [];
-    
-    try {
-      document.getElementById('loadingText').textContent = '📡 连接YouTube数据源...';
-      videos = await searchYouTube(query);
-    } catch(e) {
-      console.warn('YouTube直连失败，尝试DuckDuckGo:', e);
-      // Fallback: search via DuckDuckGo for YouTube videos
-      document.getElementById('loadingText').textContent = '🔄 切换到备用搜索...';
-      const ddgUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query + ' site:youtube.com')}`;
-      const html = await fetchWithProxy(ddgUrl);
-      // Parse DuckDuckGo results for YouTube links
-      const urlMatches = [...html.matchAll(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/g)];
-      const seen = new Set();
-      for (const m of urlMatches) {
-        const vid = m[1];
-        if (!seen.has(vid)) {
-          seen.add(vid);
-          videos.push({
-            videoId: vid,
-            title: `YouTube Video — ${query}`,
-            channel: 'YouTube',
-            views: '',
-            duration: '',
-            published: '',
-            thumb: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`
-          });
-        }
-        if (videos.length >= 6) break;
+    if (key) {
+      showLoading('🔍 通过 YouTube API 搜索...');
+      try {
+        videos = await searchYouTubeAPI(query, key);
+        source = 'YouTube Data API';
+      } catch(e) {
+        // API failed, try Invidious
+        showLoading('⚠️ API 出错，切换 Invidious...');
+        videos = await searchInvidious(query);
+        source = 'Invidious';
       }
+    } else {
+      showLoading('🔍 通过 Invidious 搜索（配置API Key可提速）...');
+      videos = await searchInvidious(query);
+      source = 'Invidious';
     }
-    
+
     if (videos.length === 0) {
-      showError(`未找到「${query}」的相关视频。请尝试英文关键词或更通用的搜索词。`);
+      showError(`未找到「${query}」的相关视频。`);
       return;
     }
-    
-    // Render
+
     hideLoading();
-    renderResults(query, videos);
-    
+    renderResults(query, videos, source);
   } catch(e) {
-    showError('搜索失败：' + e.message + '。请检查网络连接。');
+    showError('搜索失败：' + e.message);
   } finally {
     btn.disabled = false;
   }
 }
 
-function renderResults(query, videos) {
-  // Stats
+// --- Render ---
+function renderResults(query, videos, source) {
   document.getElementById('statsRow').innerHTML = `
-    <div class="stat-chip">🔍 查询：<strong>${query}</strong></div>
+    <div class="stat-chip">🔍 查询：<strong>${escHtml(query)}</strong></div>
     <div class="stat-chip">📺 找到：<strong>${videos.length} 个视频</strong></div>
+    <div class="stat-chip">📡 数据源：<strong>${source}</strong></div>
     <div class="stat-chip">⏰ <strong>${new Date().toLocaleTimeString('zh-CN')}</strong></div>
   `;
 
-  // Summary
+  // Generate smart summary
   const summary = generateSummary(query, videos);
-  if (summary) {
-    document.getElementById('summaryContent').textContent = summary.summary;
-    document.getElementById('keyPoints').innerHTML = summary.keyPoints.map(w =>
-      `<span class="key-point"># ${w}</span>`
-    ).join('');
-  }
+  document.getElementById('summaryContent').textContent = summary.text;
+  document.getElementById('keyPoints').innerHTML = summary.tags.map(t =>
+    `<span class="key-point">${t}</span>`
+  ).join('');
 
-  // Videos
+  // Render video cards
   document.getElementById('videosGrid').innerHTML = videos.map(v => `
     <a class="video-card" href="https://youtube.com/watch?v=${v.videoId}" target="_blank" rel="noopener">
       <div class="video-thumb">
-        <img src="${v.thumb}" alt="${v.title}" loading="lazy" 
+        <img src="${v.thumb}" alt="${escHtml(v.title)}" loading="lazy"
              onerror="this.src='https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg'">
         <div class="play-icon">▶</div>
         ${v.duration ? `<span class="duration-badge">${v.duration}</span>` : ''}
       </div>
       <div class="video-info">
-        <div class="video-title">${v.title}</div>
+        <div class="video-title">${escHtml(v.title)}</div>
         <div class="video-meta">
-          <span>${v.channel || 'YouTube'}</span>
+          <span>${escHtml(v.channel || 'YouTube')}</span>
           <span>${v.views || v.published || ''}</span>
         </div>
+        ${v.description ? `<div class="video-desc">${escHtml(v.description)}</div>` : ''}
       </div>
     </a>
   `).join('');
 
   document.getElementById('resultsSection').classList.add('active');
-  
-  // Smooth scroll
   document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Enter key
+function generateSummary(query, videos) {
+  const channels = [...new Set(videos.map(v => v.channel).filter(Boolean))];
+  const descriptions = videos.map(v => v.description || v.title).join(' ');
+
+  // Extract meaningful keywords from titles + descriptions
+  const stopwords = new Set(['the','and','for','with','from','that','this','have','will','what','your','their','more','about','than','some','also','been','just','like','when','then','into','them','they','were','would','which','could','there','other','can','how','all','are','not','one','get','but','you','was','has','had','its','use','using','new','very','most','best','why','top','way']);
+  const words = (videos.map(v => v.title).join(' '))
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !stopwords.has(w));
+  const freq = {};
+  words.forEach(w => freq[w] = (freq[w]||0) + 1);
+  const tags = Object.entries(freq)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([w]) => `#${w}`);
+
+  const text = `关于「${query}」，找到 ${videos.length} 个相关视频。内容创作者包括 ${channels.slice(0,5).join('、')}${channels.length > 5 ? '等' : ''}。视频涵盖教程实操、深度分析和案例分享，可快速建立对该领域的全景认知。建议优先观看播放量高的视频，结合多个创作者视角形成完整理解。`;
+
+  return { text, tags };
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// Enter to search
 document.getElementById('queryInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') doSearch();
 });
+
+// Init
+updateKeyStatus();
+if (getKey()) {
+  document.getElementById('ytKeyInput').value = getKey();
+}
 </script>
 </body>
 </html>
