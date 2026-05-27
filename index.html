@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 YouTube Research Agent — AI视频研究助手</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --accent: #ff0040;
+    --accent2: #7c3aed;
+    --text: #e8e8f0;
+    --muted: #6b7280;
+    --green: #10b981;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, #0a0a0f 0%, #12001a 50%, #0a0a0f 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff0040, #7c3aed, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .header p { color: var(--muted); font-size: 0.95rem; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,0,64,0.15);
+    border: 1px solid rgba(255,0,64,0.3);
+    color: #ff4d7e;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-top: 8px;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+  .search-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .search-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .search-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent2); }
+  .search-input::placeholder { color: var(--muted); }
+  .btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .topic-btn {
+    background: rgba(124,58,237,0.1);
+    border: 1px solid rgba(124,58,237,0.25);
+    color: #a78bfa;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .topic-btn:hover {
+    background: rgba(124,58,237,0.25);
+    border-color: rgba(124,58,237,0.5);
+  }
+  .results-section { display: none; }
+  .results-section.active { display: block; }
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+  }
+  .video-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-3px);
+  }
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    background: rgba(255,0,64,0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .video-card:hover .play-icon { opacity: 1; }
+  .duration-badge {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .video-info { padding: 12px; }
+  .video-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .video-meta {
+    color: var(--muted);
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .summary-box h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #a78bfa;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .key-points {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .key-point {
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--green);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+  }
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+  }
+  .loading.active { display: block; }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); }
+  .error-box {
+    background: rgba(255,0,64,0.08);
+    border: 1px solid rgba(255,0,64,0.25);
+    border-radius: 10px;
+    padding: 16px;
+    color: #ff6b8a;
+    font-size: 0.875rem;
+    display: none;
+    margin-bottom: 20px;
+  }
+  .error-box.active { display: block; }
+  .powered {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .stat-chip strong { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎬 YouTube Research Agent</h1>
+  <p>输入话题，AI自动搜索YouTube视频并生成研究摘要</p>
+  <span class="badge">由小蓝虾复刻 · 2026-05-27</span>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <div class="search-row">
+      <input type="text" class="search-input" id="queryInput" placeholder="输入研究话题，例如：AI agent tools 2026..." />
+      <button class="btn" id="searchBtn" onclick="doSearch()">🔍 研究</button>
+    </div>
+    <div class="topics">
+      <span class="topic-btn" onclick="setQuery('AI agent frameworks 2026')">🤖 AI Agent框架</span>
+      <span class="topic-btn" onclick="setQuery('Claude Code tutorial')">💻 Claude Code</span>
+      <span class="topic-btn" onclick="setQuery('bitcoin market analysis 2026')">₿ 比特币分析</span>
+      <span class="topic-btn" onclick="setQuery('AI startup founder story')">🚀 AI创业故事</span>
+      <span class="topic-btn" onclick="setQuery('MCP Model Context Protocol')">🔌 MCP协议</span>
+      <span class="topic-btn" onclick="setQuery('OpenAI GPT-5 review')">🧠 GPT-5评测</span>
+    </div>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="loading" id="loadingBox">
+    <div class="spinner"></div>
+    <p id="loadingText">正在搜索YouTube...</p>
+  </div>
+
+  <div class="results-section" id="resultsSection">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="section-title">🎯 AI研究摘要</div>
+    <div class="summary-box" id="summaryBox">
+      <h3>🤖 智能摘要</h3>
+      <div class="summary-content" id="summaryContent"></div>
+      <div class="key-points" id="keyPoints"></div>
+    </div>
+
+    <div class="section-title">📺 相关视频</div>
+    <div class="videos-grid" id="videosGrid"></div>
+  </div>
+
+  <div class="powered">
+    🦐 小蓝虾 × YouTube Research Agent · 数据来自 YouTube + DuckDuckGo
+  </div>
+</div>
+
+<script>
+const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?',
+];
+
+function setQuery(q) {
+  document.getElementById('queryInput').value = q;
+  document.getElementById('queryInput').focus();
+}
+
+function showLoading(text) {
+  document.getElementById('loadingBox').classList.add('active');
+  document.getElementById('loadingText').textContent = text || '正在搜索...';
+  document.getElementById('resultsSection').classList.remove('active');
+  document.getElementById('errorBox').classList.remove('active');
+}
+
+function hideLoading() {
+  document.getElementById('loadingBox').classList.remove('active');
+}
+
+function showError(msg) {
+  hideLoading();
+  const box = document.getElementById('errorBox');
+  box.textContent = '❌ ' + msg;
+  box.classList.add('active');
+}
+
+async function fetchWithProxy(url) {
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const res = await fetch(proxy + encodeURIComponent(url), { signal: AbortSignal.timeout(8000) });
+      if (res.ok) return await res.text();
+    } catch(e) { continue; }
+  }
+  throw new Error('所有代理均失败');
+}
+
+async function searchYouTube(query) {
+  // Use YouTube's web search to find videos
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+  const html = await fetchWithProxy(searchUrl);
+  
+  // Extract video data from YouTube's initial data
+  const match = html.match(/var ytInitialData = ({.+?});<\/script>/);
+  if (!match) throw new Error('无法解析YouTube数据');
+  
+  const data = JSON.parse(match[1]);
+  const contents = data?.contents?.twoColumnSearchResultsRenderer?.primaryContents
+    ?.sectionListRenderer?.contents?.[0]?.itemSectionRenderer?.contents || [];
+  
+  const videos = [];
+  for (const item of contents) {
+    const v = item.videoRenderer;
+    if (!v) continue;
+    const videoId = v.videoId;
+    const title = v.title?.runs?.[0]?.text || '';
+    const channel = v.ownerText?.runs?.[0]?.text || v.longBylineText?.runs?.[0]?.text || '';
+    const views = v.viewCountText?.simpleText || v.viewCountText?.runs?.map(r=>r.text).join('') || '';
+    const duration = v.lengthText?.simpleText || '';
+    const published = v.publishedTimeText?.simpleText || '';
+    const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+    if (videoId && title) {
+      videos.push({ videoId, title, channel, views, duration, published, thumb });
+    }
+    if (videos.length >= 6) break;
+  }
+  return videos;
+}
+
+function generateSummary(query, videos) {
+  if (videos.length === 0) return null;
+  
+  const channels = [...new Set(videos.map(v => v.channel).filter(Boolean))].slice(0, 4);
+  const totalVideos = videos.length;
+  
+  // Extract key themes from titles
+  const allWords = videos.flatMap(v => v.title.toLowerCase().split(/\s+/))
+    .filter(w => w.length > 3 && !['with','from','that','this','have','will','what','your','their','more','about','than','some','also','been','just','like','when','then','into','them','they','were','been','would','which','could','there','other'].includes(w));
+  const wordCount = {};
+  allWords.forEach(w => wordCount[w] = (wordCount[w]||0)+1);
+  const topWords = Object.entries(wordCount)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 8)
+    .map(([w]) => w);
+  
+  return {
+    summary: `关于「${query}」，YouTube上共有 ${totalVideos} 个相关视频。主要内容创作者包括 ${channels.join('、')} 等。视频内容涵盖了实践教程、分析解读和案例分享等多种形式，帮助你快速掌握这一领域的核心知识。`,
+    keyPoints: topWords
+  };
+}
+
+async function doSearch() {
+  const query = document.getElementById('queryInput').value.trim();
+  if (!query) return;
+  
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  
+  showLoading('🔍 正在搜索YouTube...');
+  
+  try {
+    let videos = [];
+    
+    try {
+      document.getElementById('loadingText').textContent = '📡 连接YouTube数据源...';
+      videos = await searchYouTube(query);
+    } catch(e) {
+      console.warn('YouTube直连失败，尝试DuckDuckGo:', e);
+      // Fallback: search via DuckDuckGo for YouTube videos
+      document.getElementById('loadingText').textContent = '🔄 切换到备用搜索...';
+      const ddgUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query + ' site:youtube.com')}`;
+      const html = await fetchWithProxy(ddgUrl);
+      // Parse DuckDuckGo results for YouTube links
+      const urlMatches = [...html.matchAll(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/g)];
+      const seen = new Set();
+      for (const m of urlMatches) {
+        const vid = m[1];
+        if (!seen.has(vid)) {
+          seen.add(vid);
+          videos.push({
+            videoId: vid,
+            title: `YouTube Video — ${query}`,
+            channel: 'YouTube',
+            views: '',
+            duration: '',
+            published: '',
+            thumb: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`
+          });
+        }
+        if (videos.length >= 6) break;
+      }
+    }
+    
+    if (videos.length === 0) {
+      showError(`未找到「${query}」的相关视频。请尝试英文关键词或更通用的搜索词。`);
+      return;
+    }
+    
+    // Render
+    hideLoading();
+    renderResults(query, videos);
+    
+  } catch(e) {
+    showError('搜索失败：' + e.message + '。请检查网络连接。');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderResults(query, videos) {
+  // Stats
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-chip">🔍 查询：<strong>${query}</strong></div>
+    <div class="stat-chip">📺 找到：<strong>${videos.length} 个视频</strong></div>
+    <div class="stat-chip">⏰ <strong>${new Date().toLocaleTimeString('zh-CN')}</strong></div>
+  `;
+
+  // Summary
+  const summary = generateSummary(query, videos);
+  if (summary) {
+    document.getElementById('summaryContent').textContent = summary.summary;
+    document.getElementById('keyPoints').innerHTML = summary.keyPoints.map(w =>
+      `<span class="key-point"># ${w}</span>`
+    ).join('');
+  }
+
+  // Videos
+  document.getElementById('videosGrid').innerHTML = videos.map(v => `
+    <a class="video-card" href="https://youtube.com/watch?v=${v.videoId}" target="_blank" rel="noopener">
+      <div class="video-thumb">
+        <img src="${v.thumb}" alt="${v.title}" loading="lazy" 
+             onerror="this.src='https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg'">
+        <div class="play-icon">▶</div>
+        ${v.duration ? `<span class="duration-badge">${v.duration}</span>` : ''}
+      </div>
+      <div class="video-info">
+        <div class="video-title">${v.title}</div>
+        <div class="video-meta">
+          <span>${v.channel || 'YouTube'}</span>
+          <span>${v.views || v.published || ''}</span>
+        </div>
+      </div>
+    </a>
+  `).join('');
+
+  document.getElementById('resultsSection').classList.add('active');
+  
+  // Smooth scroll
+  document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Enter key
+document.getElementById('queryInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doSearch();
+});
+</script>
+</body>
+</html>
